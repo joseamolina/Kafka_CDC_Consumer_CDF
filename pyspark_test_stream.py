@@ -5,16 +5,17 @@ from pyspark.sql.functions import col
 spark = SparkSession.builder \
     .appName("EjemploLocal") \
     .master("local[*]") \
-    .config(
-        "spark.jars.packages",
-        "org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.3"
-    ) \
+    .config("spark.executor.memory", "70g") \
+    .config("spark.driver.memory", "50g") \
+    .config("spark.memory.offHeap.enabled", "true") \
+    .config("spark.memory.offHeap.size", "16g") \
+    .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.3") \
     .getOrCreate()
 
 kafka_df = (
     spark.readStream
     .format("kafka")
-    .option("kafka.bootstrap.servers", "redpanda:9092")
+    .option("kafka.bootstrap.servers", "localhost:9092")
     .option("subscribe", "r023hf")
     .option("startingOffsets", "earliest")
     .load()
