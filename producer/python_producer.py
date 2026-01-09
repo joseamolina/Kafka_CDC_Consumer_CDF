@@ -69,7 +69,11 @@ def send_message(arguments):
     broker = arguments[2]
     topic = arguments[1]
     conf = {
-        'bootstrap.servers': broker
+        'bootstrap.servers': broker,
+        'security.protocol': 'SASL_PLAINTEXT',
+        'sasl.mechanism': 'SCRAM-SHA-256',
+        'sasl.username': 'myuser',
+        'sasl.password': 'mypass'
     }
 
     producer = Producer(conf)

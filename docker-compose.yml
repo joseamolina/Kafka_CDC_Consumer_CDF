@@ -15,6 +15,10 @@ services:
       - --node-id
       - "0"
       - --check=false
+      - --set
+      - redpanda.enable_sasl=true
+      - --set
+      - redpanda.superusers=['myuser']
       - --kafka-addr
       - internal://0.0.0.0:29092,external://0.0.0.0:9092
       - --advertise-kafka-addr

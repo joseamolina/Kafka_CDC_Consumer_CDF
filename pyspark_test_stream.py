@@ -16,6 +16,9 @@ kafka_df = (
     spark.readStream
     .format("kafka")
     .option("kafka.bootstrap.servers", "localhost:9092")
+    .option("kafka.security.protocol", "SASL_PLAINTEXT")
+    .option("kafka.sasl.mechanism", "SCRAM-SHA-256")
+    .option("kafka.sasl.jaas.config", 'org.apache.kafka.common.security.scram.ScramLoginModule required username="myuser" password="mypass";')
     .option("subscribe", "r023hf")
     .option("startingOffsets", "earliest")
     .load()
