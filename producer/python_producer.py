@@ -17,6 +17,7 @@ def random_row(row_id=None):
 
 def generate_cdc_event():
     global state
+    global selected_people
 
     op = random.choices(
         ["c", "u", "d"],
@@ -29,13 +30,16 @@ def generate_cdc_event():
     # INSERT
     if op == "c" or not state:
         row = random_row()
-        state[row["id"]] = row
-        return {
-            "op": "c",
-            "ts_ms": ts,
-            "before": None,
-            "after": row
-        }
+        if row["name"] not in selected_people:
+            selected_people.append(row["name"])
+            state[row["id"]] = row
+            return {
+                "op": "c",
+                "ts_ms": ts,
+                "before": None,
+                "after": row
+            }
+        return None
 
     # UPDATE
     if op == "u":
