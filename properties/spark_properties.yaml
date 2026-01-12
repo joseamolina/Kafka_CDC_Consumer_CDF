@@ -1,0 +1,15 @@
+spark_properties_dev:
+  - spark_app: "JDej29s-1-dev"
+  - spark_master: "local[*]"
+  - executor_memory: "4g"
+  - driver_memory: "2g"
+  - off_heap_size: "1g"
+  - kafka_library: "org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.3"
+
+spark_properties_pro:
+  - spark_app: "JDej29s-1-pro"
+  - spark_master: "local[*]"
+  - executor_memory: "4g"
+  - driver_memory: "2g"
+  - off_heap_size: "1g"
+  - kafka_library: "org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.3"
