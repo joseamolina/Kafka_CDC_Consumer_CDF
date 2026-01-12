@@ -7,6 +7,7 @@ import copy
 import json
 
 state = {}  # estado actual: id -> row
+selected_people = []
 
 def random_row(row_id=None):
     return {
@@ -74,23 +75,24 @@ def send_message(arguments):
     topic = arguments[1]
     conf = {
         'bootstrap.servers': broker,
-        'security.protocol': 'SASL_PLAINTEXT',
-        'sasl.mechanism': 'SCRAM-SHA-256',
-        'sasl.username': 'myuser',
-        'sasl.password': 'mypass'
+        'security.protocol': 'SSL',
+        'ssl.ca.location': '/etc/kafka-producer/certs/ca.crt'
     }
 
-    producer = Producer(conf)
+    try:
+        producer = Producer(conf)
+        print(f"Producer created for topic: {topic}")
 
-    print(topic)
-
-    while True:
-        event = generate_cdc_event()
-        print(json.dumps(event))
-        producer.produce(topic, value=json.dumps(event))
-        producer.flush()
-
-        time.sleep(1)
+        while True:
+            event = generate_cdc_event()
+            if event:
+                print(f"Sending event: {json.dumps(event)}")
+                producer.produce(topic, value=json.dumps(event))
+                producer.flush()
+            time.sleep(1)
+    except Exception as e:
+        print(f"Error in producer: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
